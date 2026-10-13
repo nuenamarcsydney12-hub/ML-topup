@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}ML TopUp Lite - Mobile Legends Top Up{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="hero-inner">
+    <h1>Mobile Legends Top Up</h1>
+    <p>Fast, simple, and convenient demo top-up experience.</p>
+    {% if logged_in %}
+      <a href="{{ url_for('customer.topup') }}" class="btn btn-primary btn-lg">Top Up Now</a>
+    {% else %}
+      <a href="{{ url_for('auth.login') }}" class="btn btn-primary btn-lg">Top Up Now</a>
+    {% endif %}
+    <p class="hero-badge">🎮 Mobile Legends: Bang Bang Only &middot; Demo Prices</p>
+  </div>
+</section>
+
+<section class="section">
+  <h2 class="section-title">Popular Packages</h2>
+  <p class="section-subtitle">All prices below are DEMO PRICES for school project purposes only.</p>
+  <div class="product-grid">
+    {% for product in products %}
+    <div class="product-card">
+      {% if product.get_discount_percent() > 0 %}
+        <span class="badge badge-discount">-{{ product.get_discount_percent() }}%</span>
+      {% endif %}
+      <div class="product-icon">💎</div>
+      <h3>{{ product.name }}</h3>
+      {% if product.bonus > 0 %}
+        <p class="product-bonus">+{{ product.bonus }} Bonus</p>
+      {% endif %}
+      <div class="product-price">
+        {% if product.get_old_price() %}
+          <span class="price-old">₱{{ "%.2f"|format(product.get_old_price()) }}</span>
+        {% endif %}
+        <span class="price-current">₱{{ "%.2f"|format(product.get_price()) }}</span>
+      </div>
+      <a href="{{ url_for('auth.login') }}" class="btn btn-outline btn-block">Select</a>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="section how-it-works">
+  <h2 class="section-title">How It Works</h2>
+  <div class="steps-grid">
+    <div class="step-card">
+      <div class="step-number">1</div>
+      <h3>Enter Game Account</h3>
+      <p>Provide your Mobile Legends Game ID and Server ID.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-number">2</div>
+      <h3>Choose Package</h3>
+      <p>Pick a diamond package that fits your needs.</p>
+    </div>
+    <div class="step-card">
+      <div class="step-number">3</div>
+      <h3>Select Payment</h3>
+      <p>Choose a demo payment method (no real charges).</p>
+    </div>
+    <div class="step-card">
+      <div class="step-number">4</div>
+      <h3>Confirm Order</h3>
+      <p>Get your order number and track its status.</p>
+    </div>
+  </div>
+</section>
+{% endblock %}

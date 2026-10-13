@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Order {{ order.order_number }} - ML TopUp Lite{% endblock %}
+
+{% block content %}
+<section class="dashboard">
+  <a href="{{ url_for('customer.orders') }}" class="back-link">&larr; Back to Orders</a>
+  <div class="order-detail-card">
+    <div class="order-detail-header">
+      <h1>{{ order.order_number }}</h1>
+      <span class="status-badge status-{{ order.status|lower }}">{{ order.status }}</span>
+    </div>
+    <div class="order-detail-grid">
+      <div><strong>Game ID:</strong> {{ order.game_id }}</div>
+      <div><strong>Server ID:</strong> {{ order.server_id }}</div>
+      <div><strong>Product:</strong> {{ order.product_name }}</div>
+      <div><strong>Price:</strong> ₱{{ "%.2f"|format(order.price) }} (DEMO)</div>
+      <div><strong>Payment Method:</strong> {{ order.payment_method }}</div>
+      <div><strong>Email:</strong> {{ order.email }}</div>
+      <div><strong>Date/Time:</strong> {{ order.created_at.strftime("%Y-%m-%d %H:%M:%S") }}</div>
+    </div>
+  </div>
+</section>
+{% endblock %}

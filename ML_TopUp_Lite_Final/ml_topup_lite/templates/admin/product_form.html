@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}{% if product %}Edit Product{% else %}New Product{% endif %} - ML TopUp Lite{% endblock %}
+
+{% block content %}
+<section class="dashboard">
+  <h1>{% if product %}Edit Product{% else %}New Product{% endif %}</h1>
+
+  <form method="POST" action="{{ form_action }}" class="form form-card">
+    <div class="form-group">
+      <label for="name">Product Name</label>
+      <input type="text" id="name" name="name" value="{{ product.name if product else '' }}" required>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="diamonds">Diamonds</label>
+        <input type="number" id="diamonds" name="diamonds" min="0" value="{{ product.diamonds if product else 0 }}" required>
+      </div>
+      <div class="form-group">
+        <label for="bonus">Bonus Diamonds</label>
+        <input type="number" id="bonus" name="bonus" min="0" value="{{ product.bonus if product else 0 }}">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="price">Demo Price (₱)</label>
+        <input type="number" id="price" name="price" min="0" step="0.01" value="{{ product.get_price() if product else '' }}" required>
+      </div>
+      <div class="form-group">
+        <label for="old_price">Old Price (₱, optional)</label>
+        <input type="number" id="old_price" name="old_price" min="0" step="0.01" value="{{ product.get_old_price() if product and product.get_old_price() else '' }}">
+      </div>
+    </div>
+    <p class="form-hint">⚠️ These are DEMO PRICES for school project purposes only.</p>
+    <button type="submit" class="btn btn-primary btn-block">{% if product %}Save Changes{% else %}Create Product{% endif %}</button>
+  </form>
+</section>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Mobile Legends Top Up - ML TopUp Lite{% endblock %}
+
+{% block content %}
+<section class="topup-section">
+  <div class="checkout-steps">
+    <div class="checkout-step active">1. Game Account</div>
+    <div class="checkout-step active">2. Select Package</div>
+    <div class="checkout-step">3. Payment</div>
+    <div class="checkout-step">4. Confirm</div>
+  </div>
+
+  <form method="POST" action="{{ url_for('customer.topup') }}" id="topupForm">
+    <div class="topup-card">
+      <h2>🎮 Mobile Legends: Bang Bang</h2>
+      <p class="topup-subtitle">Enter your game account details</p>
+      <div class="form-row">
+        <div class="form-group">
+          <label for="game_id">Game ID</label>
+          <input type="text" id="game_id" name="game_id" value="{{ game_id }}" placeholder="e.g. 123456789" required>
+        </div>
+        <div class="form-group">
+          <label for="server_id">Server ID (Zone ID)</label>
+          <input type="text" id="server_id" name="server_id" value="{{ server_id }}" placeholder="e.g. 2001" required>
+        </div>
+      </div>
+      <p class="form-hint">⚠️ We will never ask for your password. Only Game ID and Server ID are required.</p>
+    </div>
+
+    <div class="topup-card">
+      <h2>Select Top-Up Package</h2>
+      <div class="product-grid selectable-grid" id="productGrid">
+        {% for product in products %}
+        <label class="product-card selectable-card">
+          <input type="radio" name="product_id" value="{{ product.id }}" class="product-radio" required>
+          {% if product.get_discount_percent() > 0 %}
+            <span class="badge badge-discount">-{{ product.get_discount_percent() }}%</span>
+          {% endif %}
+          <div class="product-icon">💎</div>
+          <h3>{{ product.name }}</h3>
+          {% if product.bonus > 0 %}<p class="product-bonus">+{{ product.bonus }} Bonus</p>{% endif %}
+          <div class="product-price">
+            {% if product.get_old_price() %}
+              <span class="price-old">₱{{ "%.2f"|format(product.get_old_price()) }}</span>
+            {% endif %}
+            <span class="price-current">₱{{ "%.2f"|format(product.get_price()) }}</span>
+          </div>
+          <span class="select-indicator">Select</span>
+        </label>
+        {% endfor %}
+      </div>
+      <p class="demo-price-note">💡 All prices shown are DEMO PRICES for school project purposes.</p>
+    </div>
+
+    <div class="topup-actions">
+      <button type="submit" class="btn btn-primary btn-lg">Continue to Payment →</button>
+    </div>
+  </form>
+</section>
+{% endblock %}

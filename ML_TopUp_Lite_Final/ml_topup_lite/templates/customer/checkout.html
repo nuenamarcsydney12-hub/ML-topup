@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Checkout - ML TopUp Lite{% endblock %}
+
+{% block content %}
+<section class="topup-section">
+  <div class="checkout-steps">
+    <div class="checkout-step active">1. Game Account</div>
+    <div class="checkout-step active">2. Select Package</div>
+    <div class="checkout-step active">3. Payment</div>
+    <div class="checkout-step">4. Confirm</div>
+  </div>
+
+  <div class="checkout-layout">
+    <form method="POST" action="{{ url_for('customer.checkout') }}" class="checkout-form">
+      <div class="topup-card">
+        <h2>Payment Method (Demo Only)</h2>
+        <div class="payment-methods">
+          <label class="payment-option">
+            <input type="radio" name="payment_method" value="GCash" required> <span>📱 GCash</span>
+          </label>
+          <label class="payment-option">
+            <input type="radio" name="payment_method" value="Maya"> <span>💳 Maya</span>
+          </label>
+          <label class="payment-option">
+            <input type="radio" name="payment_method" value="Card"> <span>💰 Card</span>
+          </label>
+          <label class="payment-option">
+            <input type="radio" name="payment_method" value="Demo Payment"> <span>🧪 Demo Payment</span>
+          </label>
+        </div>
+        <p class="form-hint">⚠️ This is a DEMO. No real payment will be processed.</p>
+      </div>
+
+      <div class="topup-card">
+        <h2>Contact Email</h2>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" value="{{ email }}" required>
+        </div>
+      </div>
+
+      <div class="topup-actions">
+        <button type="submit" class="btn btn-primary btn-lg">Place Order</button>
+      </div>
+    </form>
+
+    <aside class="order-summary">
+      <h3>Order Summary</h3>
+      <p><strong>Game ID:</strong> {{ pending.game_id }}</p>
+      <p><strong>Server ID:</strong> {{ pending.server_id }}</p>
+      <hr>
+      <p><strong>{{ product.name }}</strong></p>
+      {% if product.bonus > 0 %}<p>+{{ product.bonus }} Bonus Diamonds</p>{% endif %}
+      <p class="summary-total">Total: ₱{{ "%.2f"|format(product.get_price()) }}</p>
+      <p class="demo-price-note">DEMO PRICE</p>
+    </aside>
+  </div>
+</section>
+{% endblock %}

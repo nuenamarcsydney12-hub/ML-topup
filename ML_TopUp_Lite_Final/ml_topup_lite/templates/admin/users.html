@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Manage Users - ML TopUp Lite{% endblock %}
+
+{% block content %}
+<section class="dashboard">
+  <div class="dashboard-header-row">
+    <h1>Manage Users</h1>
+    <a href="{{ url_for('admin.user_create') }}" class="btn btn-primary">+ New User</a>
+  </div>
+
+  {% if users %}
+  <div class="table-wrapper">
+    <table class="data-table">
+      <thead>
+        <tr><th>ID</th><th>Name</th><th>Email</th><th>Role</th><th></th></tr>
+      </thead>
+      <tbody>
+        {% for u in users %}
+        <tr>
+          <td>{{ u.id }}</td>
+          <td>{{ u.name }}</td>
+          <td>{{ u.get_email() }}</td>
+          <td><span class="role-badge role-{{ u.role }}">{{ u.role|capitalize }}</span></td>
+          <td class="action-cell">
+            {% if u.role != 'admin' or u.id == user.id %}
+            <a href="{{ url_for('admin.user_edit', user_id=u.id) }}" class="btn btn-sm btn-outline">Edit</a>
+            {% endif %}
+            {% if u.id != user.id %}
+            <form method="POST" action="{{ url_for('admin.user_delete', user_id=u.id) }}" class="inline-form confirm-delete">
+              <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+            </form>
+            {% else %}
+            <span class="text-muted">(you)</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="empty-state">No users found.</p>
+  {% endif %}
+</section>
+{% endblock %}

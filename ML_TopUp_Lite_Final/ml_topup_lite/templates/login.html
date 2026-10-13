@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Login - ML TopUp Lite{% endblock %}
+
+{% block content %}
+<section class="auth-section">
+  <div class="auth-card">
+    <h2>Login to Your Account</h2>
+    <form method="POST" action="{{ url_for('auth.login') }}" class="form">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" value="{{ email }}" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Login</button>
+    </form>
+    <p class="auth-switch">Don't have an account? <a href="{{ url_for('auth.register') }}">Register here</a></p>
+
+    <div class="demo-accounts">
+      <p class="demo-title">Demo Accounts</p>
+      <ul>
+        <li><strong>Admin:</strong> admin@mltopup.local / Admin123!</li>
+        <li><strong>Staff:</strong> staff@mltopup.local / Staff123!</li>
+        <li><strong>Customer:</strong> customer@mltopup.local / Customer123!</li>
+      </ul>
+    </div>
+  </div>
+</section>
+{% endblock %}

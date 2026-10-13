@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Manage Products - ML TopUp Lite{% endblock %}
+
+{% block content %}
+<section class="dashboard">
+  <div class="dashboard-header-row">
+    <h1>Manage Products</h1>
+    <a href="{{ url_for('admin.product_create') }}" class="btn btn-primary">+ New Product</a>
+  </div>
+
+  {% if products %}
+  <div class="table-wrapper">
+    <table class="data-table">
+      <thead>
+        <tr><th>Name</th><th>Diamonds</th><th>Bonus</th><th>Price</th><th>Old Price</th><th>Discount</th><th></th></tr>
+      </thead>
+      <tbody>
+        {% for product in products %}
+        <tr>
+          <td>{{ product.name }}</td>
+          <td>{{ product.diamonds }}</td>
+          <td>{{ product.bonus }}</td>
+          <td>₱{{ "%.2f"|format(product.get_price()) }}</td>
+          <td>{% if product.get_old_price() %}₱{{ "%.2f"|format(product.get_old_price()) }}{% else %}-{% endif %}</td>
+          <td>{% if product.get_discount_percent() > 0 %}{{ product.get_discount_percent() }}%{% else %}-{% endif %}</td>
+          <td class="action-cell">
+            <a href="{{ url_for('admin.product_edit', product_id=product.id) }}" class="btn btn-sm btn-outline">Edit</a>
+            <form method="POST" action="{{ url_for('admin.product_delete', product_id=product.id) }}" class="inline-form confirm-delete">
+              <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="empty-state">No products yet. Create one to get started.</p>
+  {% endif %}
+</section>
+{% endblock %}

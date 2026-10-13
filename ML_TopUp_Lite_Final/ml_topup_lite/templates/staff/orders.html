@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}All Orders - ML TopUp Lite{% endblock %}
+
+{% block content %}
+<section class="dashboard">
+  <h1>All Orders</h1>
+
+  <form method="GET" action="{{ url_for('staff.orders') }}" class="search-form">
+    <input type="text" name="q" value="{{ query }}" placeholder="Search by order #, Game ID, email...">
+    <button type="submit" class="btn btn-outline">Search</button>
+  </form>
+
+  {% if orders %}
+  <div class="table-wrapper">
+    <table class="data-table">
+      <thead>
+        <tr><th>Order #</th><th>Customer Email</th><th>Product</th><th>Price</th><th>Status</th><th>Date</th><th></th></tr>
+      </thead>
+      <tbody>
+        {% for order in orders %}
+        <tr>
+          <td>{{ order.order_number }}</td>
+          <td>{{ order.email }}</td>
+          <td>{{ order.product_name }}</td>
+          <td>₱{{ "%.2f"|format(order.price) }}</td>
+          <td><span class="status-badge status-{{ order.status|lower }}">{{ order.status }}</span></td>
+          <td>{{ order.created_at.strftime("%Y-%m-%d %H:%M") }}</td>
+          <td><a href="{{ url_for('staff.order_detail', order_id=order.id) }}" class="btn btn-sm btn-outline">Manage</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p class="empty-state">No orders found.</p>
+  {% endif %}
+</section>
+{% endblock %}

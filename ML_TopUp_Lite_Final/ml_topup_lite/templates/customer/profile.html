@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}My Profile - ML TopUp Lite{% endblock %}
+
+{% block content %}
+<section class="dashboard">
+  <h1>My Profile</h1>
+  <div class="profile-card">
+    <p><strong>Name:</strong> {{ user.name }}</p>
+    <p><strong>Email:</strong> {{ user.get_email() }}</p>
+    <p><strong>Role:</strong> {{ user.role|capitalize }}</p>
+    <p><strong>Role Description:</strong> {{ user.describe_role() }}</p>
+  </div>
+</section>
+{% endblock %}

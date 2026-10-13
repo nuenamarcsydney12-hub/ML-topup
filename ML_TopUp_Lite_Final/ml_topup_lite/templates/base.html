@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{% block title %}ML TopUp Lite{% endblock %}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="{{ url_for('index') }}" class="brand">
+      <span class="brand-icon">💎</span> ML TopUp Lite
+    </a>
+    <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">☰</button>
+    <div class="nav-links" id="navLinks">
+      <a href="{{ url_for('index') }}">Home</a>
+      {% if current_user %}
+        {% if current_user.role == 'customer' %}
+          <a href="{{ url_for('customer.topup') }}">Top Up</a>
+          <a href="{{ url_for('customer.orders') }}">Orders</a>
+          <a href="{{ url_for('customer.dashboard') }}">Dashboard</a>
+        {% elif current_user.role == 'staff' %}
+          <a href="{{ url_for('staff.orders') }}">Orders</a>
+          <a href="{{ url_for('staff.dashboard') }}">Dashboard</a>
+        {% elif current_user.role == 'admin' %}
+          <a href="{{ url_for('admin.products') }}">Products</a>
+          <a href="{{ url_for('admin.orders') }}">Orders</a>
+          <a href="{{ url_for('admin.dashboard') }}">Dashboard</a>
+        {% endif %}
+        <a href="{{ url_for('auth.logout') }}" class="nav-cta">Logout</a>
+      {% else %}
+        <a href="{{ url_for('auth.login') }}" class="nav-cta">Login / Account</a>
+      {% endif %}
+    </div>
+  </div>
+</nav>
+
+<div class="flash-container">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ 'success' if category == 'success' else 'error' }}" role="alert">
+          <span>{{ message }}</span>
+          <button class="alert-close" onclick="this.parentElement.remove()">&times;</button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+</div>
+
+<main class="main-content">
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <p><strong>ML TopUp Lite</strong> &mdash; School Project Demo</p>
+    <p class="footer-note">
+      This is a non-commercial school demo project. All prices are fictional DEMO PRICES.
+      No real payments are processed. Not affiliated with Moonton or MobaPay.
+    </p>
+  </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

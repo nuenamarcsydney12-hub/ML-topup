@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}{% if target %}{% if editing_self %}My Profile{% else %}Edit User{% endif %}{% else %}New User{% endif %} - ML TopUp Lite{% endblock %}
+
+{% block content %}
+<section class="dashboard">
+  <a href="{{ url_for('admin.users') }}" class="back-link">← Back to Users</a>
+  <h1>{% if target %}{% if editing_self %}Edit My Profile{% else %}Edit {{ target.role|capitalize }}{% endif %}{% else %}New User{% endif %}</h1>
+
+  <form method="POST" action="{{ form_action }}" class="form form-card">
+    <div class="form-group">
+      <label for="name">Full Name</label>
+      <input type="text" id="name" name="name" value="{{ form_values.name }}" required>
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" value="{{ form_values.email }}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="role">Role</label>
+      {% if target %}
+      <input type="text" id="role" value="{{ target.role|capitalize }}" disabled>
+      {% else %}
+      <select id="role" name="role" required>
+        <option value="customer" {% if form_values.role == 'customer' %}selected{% endif %}>Customer</option>
+        <option value="staff" {% if form_values.role == 'staff' %}selected{% endif %}>Staff</option>
+      </select>
+      {% endif %}
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label for="password">{% if target %}New Password (optional){% else %}Password{% endif %}</label>
+        <input type="password" id="password" name="password" minlength="6" autocomplete="new-password" {% if not target %}required{% endif %}>
+      </div>
+      <div class="form-group">
+        <label for="confirm_password">Confirm Password</label>
+        <input type="password" id="confirm_password" name="confirm_password" minlength="6" autocomplete="new-password" {% if not target %}required{% endif %}>
+      </div>
+    </div>
+    {% if target %}
+    <p class="form-hint">Leave both password fields blank to keep the current password.</p>
+    {% endif %}
+    {% if editing_self %}
+    <p class="form-hint">You are editing your own admin account. Your role cannot be changed.</p>
+    {% endif %}
+
+    <button type="submit" class="btn btn-primary btn-block">{% if target %}Save Changes{% else %}Create User{% endif %}</button>
+  </form>
+</section>
+{% endblock %}

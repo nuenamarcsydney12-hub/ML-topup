@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard - ML TopUp Lite{% endblock %}
+
+{% block content %}
+<section class="dashboard">
+  <div class="dashboard-header">
+    <h1>Welcome, {{ user.name }} 👋</h1>
+    <p class="dashboard-role">{{ user.get_dashboard_title() }}</p>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-value">{{ stats.total_users }}</div><div class="stat-label">Total Users</div></div>
+    <div class="stat-card"><div class="stat-value">{{ stats.total_customers }}</div><div class="stat-label">Customers</div></div>
+    <div class="stat-card"><div class="stat-value">{{ stats.total_staff }}</div><div class="stat-label">Staff</div></div>
+    <div class="stat-card"><div class="stat-value">{{ stats.total_products }}</div><div class="stat-label">Products</div></div>
+    <div class="stat-card"><div class="stat-value">{{ stats.total_orders }}</div><div class="stat-label">Total Orders</div></div>
+    <div class="stat-card"><div class="stat-value">{{ stats.pending }}</div><div class="stat-label">Pending</div></div>
+    <div class="stat-card"><div class="stat-value">{{ stats.processing }}</div><div class="stat-label">Processing</div></div>
+    <div class="stat-card"><div class="stat-value">{{ stats.completed }}</div><div class="stat-label">Completed</div></div>
+    <div class="stat-card stat-card-highlight">
+      <div class="stat-value">₱{{ "%.2f"|format(stats.demo_sales_total) }}</div>
+      <div class="stat-label">Demo Sales Total</div>
+    </div>
+  </div>
+
+  <div class="dashboard-links">
+    <a href="{{ url_for('admin.products') }}" class="btn btn-outline">Manage Products</a>
+    <a href="{{ url_for('admin.users') }}" class="btn btn-outline">Manage Users</a>
+    <a href="{{ url_for('admin.orders') }}" class="btn btn-outline">Manage Orders</a>
+    <a href="{{ url_for('admin.my_profile') }}" class="btn btn-outline">Edit My Profile</a>
+  </div>
+</section>
+{% endblock %}

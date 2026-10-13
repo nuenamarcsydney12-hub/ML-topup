@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Customer Dashboard - ML TopUp Lite{% endblock %}
+
+{% block content %}
+<section class="dashboard">
+  <div class="dashboard-header">
+    <h1>Welcome, {{ user.name }}! 👋</h1>
+    <p class="dashboard-role">{{ user.get_dashboard_title() }}</p>
+  </div>
+
+  <div class="dashboard-cta">
+    <a href="{{ url_for('customer.topup') }}" class="btn btn-primary btn-lg">💎 Mobile Legends Top Up</a>
+  </div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-value">{{ stats.total }}</div>
+      <div class="stat-label">Total Orders</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">{{ stats.pending }}</div>
+      <div class="stat-label">Pending Orders</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">{{ stats.completed }}</div>
+      <div class="stat-label">Completed Orders</div>
+    </div>
+  </div>
+
+  <div class="dashboard-section">
+    <h2>Recent Orders</h2>
+    {% if stats.recent %}
+    <div class="table-wrapper">
+      <table class="data-table">
+        <thead>
+          <tr><th>Order #</th><th>Product</th><th>Price</th><th>Status</th><th>Date</th><th></th></tr>
+        </thead>
+        <tbody>
+          {% for order in stats.recent %}
+          <tr>
+            <td>{{ order.order_number }}</td>
+            <td>{{ order.product_name }}</td>
+            <td>₱{{ "%.2f"|format(order.price) }}</td>
+            <td><span class="status-badge status-{{ order.status|lower }}">{{ order.status }}</span></td>
+            <td>{{ order.created_at.strftime("%Y-%m-%d %H:%M") }}</td>
+            <td><a href="{{ url_for('customer.order_detail', order_id=order.id) }}" class="btn btn-sm btn-outline">View</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <p class="empty-state">You haven't placed any orders yet.</p>
+    {% endif %}
+  </div>
+
+  <div class="dashboard-links">
+    <a href="{{ url_for('customer.orders') }}" class="btn btn-outline">View All Orders</a>
+    <a href="{{ url_for('customer.profile') }}" class="btn btn-outline">My Profile</a>
+  </div>
+</section>
+{% endblock %}
